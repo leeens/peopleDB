@@ -30,9 +30,9 @@ public abstract class CRUDRepository<T> {
             while (rs.next()){
                 long id = rs.getLong(1);
                 setIdByAnnotation(id, entity);
-                System.out.println(entity);
+              //  System.out.println(entity);
             }
-            System.out.printf("Records affected: %d%n", recordsAffected);
+           // System.out.printf("Records affected: %d%n", recordsAffected);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new UnableToSaveException("Tried to save entity: " + entity);
@@ -76,7 +76,7 @@ public abstract class CRUDRepository<T> {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 count = rs.getLong(1);
-                System.out.printf("Total Count: %s%n", count);
+            //    System.out.printf("Total Count: %s%n", count);
             }
 
         } catch (SQLException e) {
@@ -90,7 +90,7 @@ public abstract class CRUDRepository<T> {
             PreparedStatement ps = connection.prepareStatement(getSqlByAnnotation(CrudOperation.DELETE_ONE, this::getDeleteSql));
             ps.setLong(1, getIdByAnnotation(entity));
             int affectedRecordCount = ps.executeUpdate();
-            System.out.println(affectedRecordCount);
+           // System.out.println(affectedRecordCount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -132,7 +132,7 @@ public abstract class CRUDRepository<T> {
                     .map(String::valueOf)
                     .collect(Collectors.joining(","));
             int affectedRecords = st.executeUpdate(getSqlByAnnotation(CrudOperation.DELETE_MANY, this::getDeleteInSql).replace(":ids", ids));
-            System.out.println(affectedRecords);
+         //   System.out.println(affectedRecords);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
