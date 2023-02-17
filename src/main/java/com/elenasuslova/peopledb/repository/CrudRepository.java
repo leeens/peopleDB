@@ -15,9 +15,9 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class CRUDRepository<T> {
+public abstract class CrudRepository<T> {
     protected Connection connection;
-    public CRUDRepository(Connection connection) {
+    public CrudRepository(Connection connection) {
         this.connection = connection;
     }
 

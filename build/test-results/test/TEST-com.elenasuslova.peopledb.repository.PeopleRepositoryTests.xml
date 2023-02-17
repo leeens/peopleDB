@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-02-16T10:07:26" hostname="Elenas-Mac-mini.local" time="36.546">
+<testsuite name="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-02-17T17:50:08" hostname="Elenas-Mac-mini.local" time="0.176">
   <properties/>
-  <testcase name="loadData()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="36.546"/>
+  <testcase name="canSavePersonWithAddress()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.176"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

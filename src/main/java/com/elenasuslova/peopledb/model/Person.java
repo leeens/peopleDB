@@ -15,6 +15,8 @@ public class Person{
     ZonedDateTime dob;
     private BigDecimal salary = new BigDecimal(0);
     private String email;
+    private Address homeAddress;
+
     public Person(long id, String firstName, String lastName, ZonedDateTime dob, BigDecimal salary) {
         this(id, firstName, lastName, dob);
         this.salary = salary;
@@ -90,4 +92,12 @@ public class Person{
         return Objects.hash(id, firstName, lastName, dob);
     }
 
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public com.elenasuslova.peopledb.model.Address getHomeAddress() {
+        return homeAddress;
+    }
 }

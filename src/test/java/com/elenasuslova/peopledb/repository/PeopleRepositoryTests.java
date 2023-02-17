@@ -1,8 +1,11 @@
 package com.elenasuslova.peopledb.repository;
 
+import com.elenasuslova.peopledb.model.Address;
 import com.elenasuslova.peopledb.model.Person;
+import com.elenasuslova.peopledb.model.Region;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -50,6 +53,16 @@ public class PeopleRepositoryTests {
         Person savedPerson = repo.save(john);
         Person savedPerson2 = repo.save(bobby);
         assertThat(savedPerson.getId()).isNotEqualTo(savedPerson2.getId());
+    }
+
+    @Test
+    public void canSavePersonWithAddress() throws SQLException {
+        Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
+        Address address = new Address(null,"123 Beale St", "Apt 1A", "Richmond", "WA", "90210", "USA", "Main County", Region.WEST);
+        john.setHomeAddress(address);
+
+        Person savedPerson = repo.save(john);
+        assertThat(savedPerson.getHomeAddress().id()).isGreaterThan(0);
     }
 
     @Test
@@ -121,6 +134,7 @@ public class PeopleRepositoryTests {
     }
 
     @Test
+    @Disabled
     public void loadData() throws IOException, SQLException {
         Files.lines(Path.of("/Users/elenasuslova/Downloads/Hr5m.csv"))
                 .skip(1)
@@ -138,4 +152,6 @@ public class PeopleRepositoryTests {
                 .forEach(repo::save);
         connection.commit();
     }
+
+
 }

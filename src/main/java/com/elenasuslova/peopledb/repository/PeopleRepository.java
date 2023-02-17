@@ -1,6 +1,7 @@
 package com.elenasuslova.peopledb.repository;
 
 import com.elenasuslova.peopledb.annotation.SQL;
+import com.elenasuslova.peopledb.model.Address;
 import com.elenasuslova.peopledb.model.CrudOperation;
 import com.elenasuslova.peopledb.model.Person;
 
@@ -9,10 +10,11 @@ import java.sql.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class PeopleRepository extends CRUDRepository<Person>{
+public class PeopleRepository extends CrudRepository<Person> {
+
     public static final String SAVE_PERSON_SQL = """
-                INSERT INTO PEOPLE (FIRST_NAME, LAST_NAME, DOB, SALARY, EMAIL)  
-                VALUES(?, ?, ?, ?, ?)""";
+                INSERT INTO PEOPLE (FIRST_NAME, LAST_NAME, DOB, SALARY, EMAIL, HOME_ADDRESS)  
+                VALUES(?, ?, ?, ?, ?, ?)""";
     public static final String SELECT_COUNT_SQL = "SELECT COUNT (*) FROM PEOPLE";
     public static final String FIND_BY_ID_SQL = "SELECT ID, FIRST_NAME, LAST_NAME, DOB, SALARY FROM PEOPLE WHERE ID=?";
     public static final String FIND_ALL_SQL = "SELECT ID, FIRST_NAME, LAST_NAME, DOB, SALARY FROM PEOPLE";
@@ -20,8 +22,11 @@ public class PeopleRepository extends CRUDRepository<Person>{
     public static final String DELETE_IN_SQL = "DELETE FROM PEOPLE WHERE ID IN (:ids)";
     public static final String UPDATE_SQL = "UPDATE PEOPLE SET FIRST_NAME=?, LAST_NAME=?, DOB=?, SALARY=? WHERE ID=?";
 
+    public AddressRepository addressRepository;
     public PeopleRepository(Connection connection) {
+
         super(connection);
+        addressRepository = new AddressRepository(connection);
     }
     @Override
     @SQL(value = SELECT_COUNT_SQL, operationType = CrudOperation.COUNT)
@@ -48,11 +53,13 @@ public class PeopleRepository extends CRUDRepository<Person>{
     @Override
     @SQL(value = SAVE_PERSON_SQL, operationType = CrudOperation.SAVE)
     void mapForSave(Person entity, PreparedStatement ps) throws SQLException {
+        Address savedAddress = addressRepository.save(entity.getHomeAddress());
         ps.setString(1, entity.getFirstName());
         ps.setString(2, entity.getLastName());
         ps.setTimestamp(3, convertDobToTimeStamp(entity.getDob()));
         ps.setBigDecimal(4, entity.getSalary());
         ps.setString(5, entity.getEmail());
+        ps.setLong(6, savedAddress.id());
     }
     private static Timestamp convertDobToTimeStamp(ZonedDateTime dob) {
         return Timestamp.valueOf(dob
