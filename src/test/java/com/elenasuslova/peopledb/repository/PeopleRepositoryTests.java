@@ -73,6 +73,17 @@ public class PeopleRepositoryTests {
     }
 
     @Test
+    public void carFindPersonByIdWithAddress() throws SQLException {
+        Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
+        Address address = new Address(null,"123 Beale St", "Apt 1A", "Richmond", "WA", "90210", "USA", "Main County", Region.WEST);
+        john.setHomeAddress(address);
+
+        Person savedPerson = repo.save(john);
+        Person foundPerson = repo.findById(savedPerson.getId()).get();
+        assertThat(foundPerson.getHomeAddress().get().state()).isEqualTo("WA");
+    }
+
+    @Test
     public void testPersonIDNotFound(){
         Optional<Person> foundPerson = repo.findById(-1L);
         assertThat(foundPerson).isEmpty();

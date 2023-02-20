@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 public class PeopleRepository extends CrudRepository<Person> {
 
@@ -16,7 +17,7 @@ public class PeopleRepository extends CrudRepository<Person> {
                 INSERT INTO PEOPLE (FIRST_NAME, LAST_NAME, DOB, SALARY, EMAIL, HOME_ADDRESS)  
                 VALUES(?, ?, ?, ?, ?, ?)""";
     public static final String SELECT_COUNT_SQL = "SELECT COUNT (*) FROM PEOPLE";
-    public static final String FIND_BY_ID_SQL = "SELECT ID, FIRST_NAME, LAST_NAME, DOB, SALARY FROM PEOPLE WHERE ID=?";
+    public static final String FIND_BY_ID_SQL = "SELECT ID, FIRST_NAME, LAST_NAME, DOB, SALARY, HOME_ADDRESS FROM PEOPLE WHERE ID=?";
     public static final String FIND_ALL_SQL = "SELECT ID, FIRST_NAME, LAST_NAME, DOB, SALARY FROM PEOPLE";
     public static final String DELETE_ONE_SQL = "DELETE FROM PEOPLE WHERE ID=?";
     public static final String DELETE_IN_SQL = "DELETE FROM PEOPLE WHERE ID IN (:ids)";
@@ -40,7 +41,11 @@ public class PeopleRepository extends CrudRepository<Person> {
         String lastName = rs.getString("LAST_NAME");
         ZonedDateTime dob = ZonedDateTime.of((rs.getTimestamp("DOB").toLocalDateTime()), ZoneId.of("+0"));
         BigDecimal salary = rs.getBigDecimal("SALARY");
-        return new Person(personId, firstName, lastName, dob, salary);
+        long homeAddressId = rs.getLong("HOME_ADDRESS");
+        Optional<Address> homeAddress = addressRepository.findById(homeAddressId);
+        Person person = new Person(personId, firstName, lastName, dob, salary);
+        person.setHomeAddress(homeAddress.orElse(null));
+        return person;
     }
     @Override
     @SQL(value = UPDATE_SQL, operationType = CrudOperation.UPDATE)
