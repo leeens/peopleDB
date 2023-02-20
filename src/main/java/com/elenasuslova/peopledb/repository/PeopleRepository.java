@@ -53,13 +53,19 @@ public class PeopleRepository extends CrudRepository<Person> {
     @Override
     @SQL(value = SAVE_PERSON_SQL, operationType = CrudOperation.SAVE)
     void mapForSave(Person entity, PreparedStatement ps) throws SQLException {
-        Address savedAddress = addressRepository.save(entity.getHomeAddress());
+        Address savedAddress = null;
         ps.setString(1, entity.getFirstName());
         ps.setString(2, entity.getLastName());
         ps.setTimestamp(3, convertDobToTimeStamp(entity.getDob()));
         ps.setBigDecimal(4, entity.getSalary());
         ps.setString(5, entity.getEmail());
-        ps.setLong(6, savedAddress.id());
+        if (entity.getHomeAddress().isPresent()) {
+            savedAddress = addressRepository.save(entity.getHomeAddress().get());
+            ps.setLong(6, savedAddress.id());
+        } else {
+            ps.setObject(6, null);
+        }
+
     }
     private static Timestamp convertDobToTimeStamp(ZonedDateTime dob) {
         return Timestamp.valueOf(dob
