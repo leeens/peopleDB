@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 
 public class PeopleRepository extends CrudRepository<Person> {
 
@@ -21,7 +20,7 @@ public class PeopleRepository extends CrudRepository<Person> {
     public static final String FIND_BY_ID_SQL = """
     SELECT 
     P.ID, P.FIRST_NAME, P.LAST_NAME, P.DOB, P.SALARY, P.HOME_ADDRESS, 
-    A.ID, A.STREET_ADDRESS, A.ADDRESS2, A.CITY, A.STATE, A.POSTCODE, A.COUNTY, A.REGION, A.COUNTRY
+    A.ID AS A_ID, A.STREET_ADDRESS, A.ADDRESS2, A.CITY, A.STATE, A.POSTCODE, A.COUNTY, A.REGION, A.COUNTRY
     FROM PEOPLE AS P
     LEFT OUTER JOIN ADDRESSES AS A ON P.HOME_ADDRESS = A.ID
     WHERE P.ID=?""";
@@ -58,8 +57,10 @@ public class PeopleRepository extends CrudRepository<Person> {
         return person;
     }
 
-    private static Address extractAddress(ResultSet rs) throws SQLException {
-        long addressId = rs.getLong("ID");
+    private Address extractAddress(ResultSet rs) throws SQLException {
+        Long addressId = getValueByAlias("A_ID", rs, Long.class);
+        if (addressId == null) return null;
+        long addr2 = getValueByAlias("A_ID", rs, Long.class);
         String streetAddress = rs.getString("STREET_ADDRESS");
         String address2 = rs.getString("ADDRESS2");
         String city = rs.getString("CITY");
@@ -71,6 +72,17 @@ public class PeopleRepository extends CrudRepository<Person> {
         Address address = new Address(addressId, streetAddress, address2, city, state, postcode, country, county, region);
         return address;
     }
+
+    private <T> T getValueByAlias(String alias, ResultSet rs, Class<T> clazz) throws SQLException {
+        int columnCount = rs.getMetaData().getColumnCount();
+        for (int colIdx=1; colIdx<=columnCount; colIdx++){
+            if(alias.equals(rs.getMetaData().getColumnLabel(colIdx))){
+                return (T) rs.getObject(colIdx);
+            }
+        }
+        throw new SQLException(String.format("Column not found for alias: '%s'", alias));
+    }
+
 
     @Override
     @SQL(value = UPDATE_SQL, operationType = CrudOperation.UPDATE)

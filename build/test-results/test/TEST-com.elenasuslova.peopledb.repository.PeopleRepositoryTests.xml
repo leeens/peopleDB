@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-02-20T18:23:40" hostname="Elenas-Mac-mini.local" time="0.177">
+<testsuite name="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" tests="12" skipped="2" failures="0" errors="0" timestamp="2023-02-27T17:10:13" hostname="Elenas-Mac-mini.local" time="7.405">
   <properties/>
-  <testcase name="carFindPersonByIdWithAddress()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.177"/>
+  <testcase name="canDelete()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="5.016"/>
+  <testcase name="canFindPersonById()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.027"/>
+  <testcase name="carFindPersonByIdWithAddress()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.02"/>
+  <testcase name="canSaveTwoPeople()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.015"/>
+  <testcase name="canUpdate()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.018"/>
+  <testcase name="canDeleteMultiplePeople()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.014"/>
+  <testcase name="canSavePersonWithAddress()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.013"/>
+  <testcase name="canGetCount()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="2.256"/>
+  <testcase name="testPersonIDNotFound()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.011"/>
+  <testcase name="canSaveOnePerson()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.008"/>
+  <testcase name="loadData()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="canFindAll()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.0">
+    <skipped/>
+  </testcase>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
