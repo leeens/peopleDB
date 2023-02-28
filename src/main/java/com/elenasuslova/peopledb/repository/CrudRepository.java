@@ -30,6 +30,7 @@ public abstract class CrudRepository<T> {
             while (rs.next()){
                 long id = rs.getLong(1);
                 setIdByAnnotation(id, entity);
+                postSave(entity, id);
               //  System.out.println(entity);
             }
            // System.out.printf("Records affected: %d%n", recordsAffected);
@@ -39,6 +40,7 @@ public abstract class CrudRepository<T> {
         }
         return entity;
     }
+
 
     public Optional<T> findById(Long id) {
         T entity = null;
@@ -173,6 +175,9 @@ public abstract class CrudRepository<T> {
     protected String getCountSql() {throw new RuntimeException("SQL not defined");};
     protected String getFindAllSql() {throw new RuntimeException("SQL not defined");};
     protected String getSaveSql() {throw new RuntimeException("SQL not defined");};
+
+    protected void postSave(T entity, long id) {}
+
     protected String getUpdateSql(){throw new RuntimeException("SQL not defined");};
     abstract T extractEntityFromResultSet(ResultSet rs) throws SQLException;
     /**

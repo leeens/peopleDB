@@ -15,8 +15,8 @@ import java.util.Optional;
 public class PeopleRepository extends CrudRepository<Person> {
 
     public static final String SAVE_PERSON_SQL = """
-                INSERT INTO PEOPLE (FIRST_NAME, LAST_NAME, DOB, SALARY, EMAIL, HOME_ADDRESS, BIZ_ADDRESS)  
-                VALUES(?, ?, ?, ?, ?, ?, ?)""";
+                INSERT INTO PEOPLE (FIRST_NAME, LAST_NAME, DOB, SALARY, EMAIL, HOME_ADDRESS, BIZ_ADDRESS, PARENT_ID)  
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?)""";
     public static final String SELECT_COUNT_SQL = "SELECT COUNT (*) FROM PEOPLE";
     public static final String FIND_BY_ID_SQL = """
     SELECT 
@@ -107,6 +107,22 @@ public class PeopleRepository extends CrudRepository<Person> {
         ps.setString(5, entity.getEmail());
         associateAddressWithPerson(entity.getHomeAddress(), ps, 6);
         associateAddressWithPerson(entity.getBusinessAddress(), ps, 7);
+        associateChieldWithPerson(entity, ps);
+    }
+
+    private void associateChieldWithPerson(Person entity, PreparedStatement ps) throws SQLException {
+        Optional<Person> parent = entity.getParent();
+        if (parent.isPresent()) {
+            ps.setLong(8, parent.get().getId());
+        } else {
+            ps.setObject(8, null);
+        }
+    }
+
+    @Override
+    protected void postSave(Person entity, long id) {
+        entity.getChildren().stream()
+                .forEach(this::save);
     }
 
     private void associateAddressWithPerson(Optional<Address> address, PreparedStatement ps, int parameterIndex) throws SQLException {

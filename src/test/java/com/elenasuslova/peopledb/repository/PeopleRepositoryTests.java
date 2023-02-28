@@ -75,6 +75,17 @@ public class PeopleRepositoryTests {
         assertThat(savedPerson.getBusinessAddress().get().id()).isGreaterThan(0);
     }
 
+    @Test void canSavePersonWithChildren(){
+        Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
+        john.addChild(new Person("Johnny", "Smith", ZonedDateTime.of(2010, 1, 1, 1, 0, 0, 0, ZoneId.of("-6"))));
+        john.addChild(new Person("Sarah", "Smith", ZonedDateTime.of(2012, 3, 1, 1, 0, 0, 0, ZoneId.of("-6"))));
+        john.addChild(new Person("jenny", "Smith", ZonedDateTime.of(2014, 5, 1, 1, 0, 0, 0, ZoneId.of("-6"))));
+        Person savedperson = repo.save(john);
+        savedperson.getChildren().stream()
+                        .map(Person::getId)
+                        .forEach(id -> assertThat(id).isGreaterThan(0));
+    }
+
     @Test
     public void canFindPersonById(){
         Person savedPerson = repo.save(new Person("test", "jackson", ZonedDateTime.now()));
