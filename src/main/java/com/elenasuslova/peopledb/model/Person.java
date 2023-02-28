@@ -17,6 +17,7 @@ public class Person{
     private BigDecimal salary = new BigDecimal(0);
     private String email;
     private Optional<Address> homeAddress = Optional.empty();
+    private Optional<Address> businessAddress = Optional.empty();
 
     public Person(long id, String firstName, String lastName, ZonedDateTime dob, BigDecimal salary) {
         this(id, firstName, lastName, dob);
@@ -100,5 +101,13 @@ public class Person{
 
     public Optional<Address> getHomeAddress() {
         return homeAddress;
+    }
+
+    public void setBusinessAddress(Address businessAddress) {
+        this.businessAddress = Optional.ofNullable(businessAddress);
+    }
+
+    public Optional<Address> getBusinessAddress() {
+        return businessAddress;
     }
 }

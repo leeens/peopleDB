@@ -56,13 +56,23 @@ public class PeopleRepositoryTests {
     }
 
     @Test
-    public void canSavePersonWithAddress() throws SQLException {
+    public void canSavePersonWithHomeAddress() throws SQLException {
         Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
         Address address = new Address(null,"123 Beale St", "Apt 1A", "Richmond", "WA", "90210", "USA", "Main County", Region.WEST);
         john.setHomeAddress(address);
 
         Person savedPerson = repo.save(john);
         assertThat(savedPerson.getHomeAddress().get().id()).isGreaterThan(0);
+    }
+
+    @Test
+    public void canSavePersonWithBizAddress() throws SQLException {
+        Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
+        Address address = new Address(null,"123 Beale St", "Apt 1A", "Richmond", "WA", "90210", "USA", "Main County", Region.WEST);
+        john.setBusinessAddress(address);
+
+        Person savedPerson = repo.save(john);
+        assertThat(savedPerson.getBusinessAddress().get().id()).isGreaterThan(0);
     }
 
     @Test
@@ -73,7 +83,7 @@ public class PeopleRepositoryTests {
     }
 
     @Test
-    public void carFindPersonByIdWithAddress() throws SQLException {
+    public void carFindPersonByIdWithHomeAddress() throws SQLException {
         Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
         Address address = new Address(null,"123 Beale St", "Apt 1A", "Richmond", "WA", "90210", "USA", "Main County", Region.WEST);
         john.setHomeAddress(address);
@@ -81,6 +91,17 @@ public class PeopleRepositoryTests {
         Person savedPerson = repo.save(john);
         Person foundPerson = repo.findById(savedPerson.getId()).get();
         assertThat(foundPerson.getHomeAddress().get().state()).isEqualTo("WA");
+    }
+
+    @Test
+    public void carFindPersonByIdWithBizAddress() throws SQLException {
+        Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
+        Address address = new Address(null,"123 Beale St", "Apt 1A", "Richmond", "WA", "90210", "USA", "Main County", Region.WEST);
+        john.setBusinessAddress(address);
+
+        Person savedPerson = repo.save(john);
+        Person foundPerson = repo.findById(savedPerson.getId()).get();
+        assertThat(foundPerson.getBusinessAddress().get().state()).isEqualTo("WA");
     }
 
     @Test
