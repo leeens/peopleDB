@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-02-28T17:56:27" hostname="Elenas-Mac-mini.local" time="0.166">
+<testsuite name="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" tests="16" skipped="2" failures="0" errors="0" timestamp="2023-03-03T09:07:12" hostname="Elenas-Mac-mini.local" time="22.043">
   <properties/>
-  <testcase name="canSavePersonWithChildren()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.166"/>
+  <testcase name="canSavePersonWithHomeAddress()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.176"/>
+  <testcase name="canDelete()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="4.684"/>
+  <testcase name="canFindPersonByIdWithHomeAddress()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="2.352"/>
+  <testcase name="canFindPersonById()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="2.381"/>
+  <testcase name="canSaveTwoPeople()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.011"/>
+  <testcase name="canUpdate()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="4.838"/>
+  <testcase name="canDeleteMultiplePeople()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.012"/>
+  <testcase name="canSavePersonWithBizAddress()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.012"/>
+  <testcase name="canSavePersonWithChildren()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.02"/>
+  <testcase name="canGetCount()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="2.354"/>
+  <testcase name="testPersonIDNotFound()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.016"/>
+  <testcase name="canSaveOnePerson()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.011"/>
+  <testcase name="loadData()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="canFindAll()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="canFindPersonByIdWithBizAddress()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="2.575"/>
+  <testcase name="canFindPersonByIdWithChildren()" classname="com.elenasuslova.peopledb.repository.PeopleRepositoryTests" time="2.594"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -19,7 +19,9 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PeopleRepositoryTests {
@@ -75,7 +77,8 @@ public class PeopleRepositoryTests {
         assertThat(savedPerson.getBusinessAddress().get().id()).isGreaterThan(0);
     }
 
-    @Test void canSavePersonWithChildren(){
+    @Test
+    void canSavePersonWithChildren() throws SQLException {
         Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
         john.addChild(new Person("Johnny", "Smith", ZonedDateTime.of(2010, 1, 1, 1, 0, 0, 0, ZoneId.of("-6"))));
         john.addChild(new Person("Sarah", "Smith", ZonedDateTime.of(2012, 3, 1, 1, 0, 0, 0, ZoneId.of("-6"))));
@@ -84,7 +87,9 @@ public class PeopleRepositoryTests {
         savedperson.getChildren().stream()
                         .map(Person::getId)
                         .forEach(id -> assertThat(id).isGreaterThan(0));
+        connection.commit();
     }
+
 
     @Test
     public void canFindPersonById(){
@@ -94,7 +99,7 @@ public class PeopleRepositoryTests {
     }
 
     @Test
-    public void carFindPersonByIdWithHomeAddress() throws SQLException {
+    public void canFindPersonByIdWithHomeAddress() throws SQLException {
         Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
         Address address = new Address(null,"123 Beale St", "Apt 1A", "Richmond", "WA", "90210", "USA", "Main County", Region.WEST);
         john.setHomeAddress(address);
@@ -105,7 +110,7 @@ public class PeopleRepositoryTests {
     }
 
     @Test
-    public void carFindPersonByIdWithBizAddress() throws SQLException {
+    public void canFindPersonByIdWithBizAddress() throws SQLException {
         Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
         Address address = new Address(null,"123 Beale St", "Apt 1A", "Richmond", "WA", "90210", "USA", "Main County", Region.WEST);
         john.setBusinessAddress(address);
@@ -113,6 +118,19 @@ public class PeopleRepositoryTests {
         Person savedPerson = repo.save(john);
         Person foundPerson = repo.findById(savedPerson.getId()).get();
         assertThat(foundPerson.getBusinessAddress().get().state()).isEqualTo("WA");
+    }
+
+    @Test
+    public void canFindPersonByIdWithChildren(){
+        Person john = new Person("John", "Smith", ZonedDateTime.of(1980, 11, 15, 15, 15, 0, 0, ZoneId.of("-6")));
+        john.addChild(new Person("Johnny", "Smith", ZonedDateTime.of(2010, 1, 1, 1, 0, 0, 0, ZoneId.of("-6"))));
+        john.addChild(new Person("Sarah", "Smith", ZonedDateTime.of(2012, 3, 1, 1, 0, 0, 0, ZoneId.of("-6"))));
+        john.addChild(new Person("Jenny", "Smith", ZonedDateTime.of(2014, 5, 1, 1, 0, 0, 0, ZoneId.of("-6"))));
+        
+        Person savedperson = repo.save(john);
+        Person foundPerson = repo.findById(savedperson.getId()).get();
+
+        assertThat(foundPerson.getChildren().stream().map(Person::getFirstName).collect(toSet())).contains("Johnny", "Sarah", "Jenny");
     }
 
     @Test
